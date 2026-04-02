@@ -240,20 +240,29 @@ body {
 .about-slider {
   display: flex;
   gap: 24px;
-  overflow: hidden;
-  scroll-behavior: auto;
-  cursor: grab;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
   user-select: none;
-  touch-action: pan-y;
+  cursor: grab;
+}
+
+.about-slider::-webkit-scrollbar {
+  display: none;
 }
 
 .about-slider.dragging {
   cursor: grabbing;
+  scroll-behavior: auto;
 }
 
 .about-slide {
   flex: 0 0 100%;
   max-width: 100%;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
   background: rgba(255, 255, 255, 0.72);
   border-radius: 26px;
   padding: 24px 20px 26px;
