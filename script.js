@@ -90,6 +90,8 @@ function setupLanguage() {
   };
 
   const langButtons = document.querySelectorAll(".lang-btn");
+  if (!langButtons.length) return;
+
   const savedLanguage = localStorage.getItem("preferredLanguage");
   const browserLanguage = (navigator.language || "sv").toLowerCase();
   const initialLanguage =
@@ -133,25 +135,30 @@ function setupLanguage() {
 }
 
 function setupAboutCarousel() {
-  const aboutSlider = document.getElementById("aboutSlider");
-  const aboutDots = document.querySelectorAll(".about-dot");
+  const slider = document.getElementById("aboutSlider");
+  const dots = document.querySelectorAll(".about-dot");
 
-  if (!aboutSlider || !aboutDots.length) return;
+  if (!slider || !dots.length) return;
 
-  const slides = aboutSlider.querySelectorAll(".about-slide");
+  const slides = slider.querySelectorAll(".about-slide");
 
   let currentIndex = 0;
-  let autoSlide = null;
-  let restartTimer = null;
+  let autoScrollInterval = null;
+  let restartTimeout = null;
 
-  let isPointerDown = false;
+  let isDragging = false;
+  let moved = false;
   let startX = 0;
-  let startScrollLeft = 0;
-  let pointerId = null;
-  let hasMoved = false;
+  let currentTranslate = 0;
+  let previousTranslate = 0;
+  let animationId = 0;
+
+  function setSliderPosition(value) {
+    slider.scrollLeft = value;
+  }
 
   function getGap() {
-    const styles = window.getComputedStyle(aboutSlider);
+    const styles = window.getComputedStyle(slider);
     return parseInt(styles.gap || styles.columnGap || "0", 10);
   }
 
@@ -161,7 +168,7 @@ function setupAboutCarousel() {
   }
 
   function updateDots(index) {
-    aboutDots.forEach((dot, i) => {
+    dots.forEach((dot, i) => {
       dot.classList.toggle("active", i === index);
     });
   }
@@ -175,151 +182,186 @@ function setupAboutCarousel() {
     if (!slideWidth) return;
 
     currentIndex = clampIndex(index);
+    previousTranslate = currentIndex * slideWidth;
 
-    aboutSlider.scrollTo({
-      left: currentIndex * slideWidth,
+    slider.scrollTo({
+      left: previousTranslate,
       behavior
     });
 
     updateDots(currentIndex);
   }
 
-  function getNearestIndex() {
+  function getCurrentIndexFromScroll() {
     const slideWidth = getSlideWidth();
     if (!slideWidth) return 0;
-    return Math.round(aboutSlider.scrollLeft / slideWidth);
+    return clampIndex(Math.round(slider.scrollLeft / slideWidth));
   }
 
-  function syncIndexFromScroll() {
-    const index = clampIndex(getNearestIndex());
-    if (index !== currentIndex) {
-      currentIndex = index;
-      updateDots(currentIndex);
+  function stopAutoScroll() {
+    if (autoScrollInterval) {
+      clearInterval(autoScrollInterval);
+      autoScrollInterval = null;
+    }
+
+    if (restartTimeout) {
+      clearTimeout(restartTimeout);
+      restartTimeout = null;
     }
   }
 
-  function stopAutoSlide() {
-    if (autoSlide) {
-      clearInterval(autoSlide);
-      autoSlide = null;
-    }
+  function startAutoScroll() {
+    stopAutoScroll();
 
-    if (restartTimer) {
-      clearTimeout(restartTimer);
-      restartTimer = null;
-    }
-  }
-
-  function startAutoSlide() {
-    stopAutoSlide();
-
-    autoSlide = setInterval(() => {
+    autoScrollInterval = setInterval(() => {
       const nextIndex = currentIndex + 1 >= slides.length ? 0 : currentIndex + 1;
       goToSlide(nextIndex, "smooth");
     }, 3500);
   }
 
-  function scheduleAutoRestart(delay = 4000) {
-    if (restartTimer) {
-      clearTimeout(restartTimer);
+  function restartAutoScroll(delay = 3500) {
+    if (restartTimeout) {
+      clearTimeout(restartTimeout);
     }
 
-    restartTimer = setTimeout(() => {
-      startAutoSlide();
+    restartTimeout = setTimeout(() => {
+      startAutoScroll();
     }, delay);
   }
 
-  aboutDots.forEach((dot, index) => {
+  dots.forEach((dot, index) => {
     dot.addEventListener("click", () => {
-      stopAutoSlide();
+      stopAutoScroll();
       goToSlide(index, "smooth");
-      scheduleAutoRestart();
+      restartAutoScroll();
     });
   });
 
-  aboutSlider.addEventListener("scroll", syncIndexFromScroll, { passive: true });
-
-  aboutSlider.addEventListener("pointerdown", (event) => {
-    if (event.pointerType === "mouse" && event.button !== 0) return;
-
-    isPointerDown = true;
-    hasMoved = false;
-    startX = event.clientX;
-    startScrollLeft = aboutSlider.scrollLeft;
-    pointerId = event.pointerId;
-
-    aboutSlider.classList.add("dragging");
-    aboutSlider.setPointerCapture(pointerId);
-    stopAutoSlide();
-  });
-
-  aboutSlider.addEventListener("pointermove", (event) => {
-    if (!isPointerDown) return;
-    if (pointerId !== event.pointerId) return;
-
-    const deltaX = event.clientX - startX;
-
-    if (Math.abs(deltaX) > 4) {
-      hasMoved = true;
-    }
-
-    aboutSlider.scrollLeft = startScrollLeft - deltaX;
-
-    if (event.pointerType === "mouse") {
-      event.preventDefault();
-    }
-  });
-
-  function finishPointerDrag(event) {
-    if (!isPointerDown) return;
-    if (pointerId !== event.pointerId) return;
-
-    isPointerDown = false;
-    aboutSlider.classList.remove("dragging");
-
-    try {
-      aboutSlider.releasePointerCapture(pointerId);
-    } catch (error) {
-      // Ignorera om capture redan släppts
-    }
-
-    pointerId = null;
-
-    const nearestIndex = clampIndex(getNearestIndex());
-    goToSlide(nearestIndex, "smooth");
-    scheduleAutoRestart(hasMoved ? 4500 : 3000);
+  function animation() {
+    if (!isDragging) return;
+    setSliderPosition(currentTranslate);
+    animationId = requestAnimationFrame(animation);
   }
 
-  aboutSlider.addEventListener("pointerup", finishPointerDrag);
-  aboutSlider.addEventListener("pointercancel", finishPointerDrag);
+  function pointerDown(clientX) {
+    isDragging = true;
+    moved = false;
+    startX = clientX;
+    previousTranslate = slider.scrollLeft;
+    currentTranslate = previousTranslate;
 
-  aboutSlider.addEventListener("dragstart", (event) => {
-    event.preventDefault();
-  });
+    slider.classList.add("dragging");
+    stopAutoScroll();
 
-  aboutSlider.addEventListener("mouseenter", () => {
-    stopAutoSlide();
-  });
+    animationId = requestAnimationFrame(animation);
+  }
 
-  aboutSlider.addEventListener("mouseleave", () => {
-    if (!isPointerDown) {
-      scheduleAutoRestart(1500);
+  function pointerMove(clientX) {
+    if (!isDragging) return;
+
+    const diff = clientX - startX;
+
+    if (Math.abs(diff) > 5) {
+      moved = true;
     }
+
+    currentTranslate = previousTranslate - diff;
+  }
+
+  function pointerUp() {
+    if (!isDragging) return;
+
+    isDragging = false;
+    slider.classList.remove("dragging");
+    cancelAnimationFrame(animationId);
+
+    const movedBy = currentTranslate - previousTranslate;
+    const threshold = getSlideWidth() * 0.15;
+
+    if (movedBy > threshold) {
+      currentIndex = clampIndex(currentIndex - 1);
+    } else if (movedBy < -threshold) {
+      currentIndex = clampIndex(currentIndex + 1);
+    } else {
+      currentIndex = getCurrentIndexFromScroll();
+    }
+
+    goToSlide(currentIndex, "smooth");
+    restartAutoScroll(moved ? 4500 : 2500);
+  }
+
+  slider.addEventListener("mousedown", (event) => {
+    if (event.button !== 0) return;
+    event.preventDefault();
+    pointerDown(event.pageX);
   });
 
-  aboutSlider.addEventListener(
+  window.addEventListener("mousemove", (event) => {
+    if (!isDragging) return;
+    event.preventDefault();
+    pointerMove(event.pageX);
+  });
+
+  window.addEventListener("mouseup", () => {
+    pointerUp();
+  });
+
+  slider.addEventListener(
     "touchstart",
-    () => {
-      stopAutoSlide();
+    (event) => {
+      const touch = event.touches[0];
+      pointerDown(touch.clientX);
     },
     { passive: true }
   );
 
-  aboutSlider.addEventListener(
+  slider.addEventListener(
+    "touchmove",
+    (event) => {
+      if (!isDragging) return;
+      const touch = event.touches[0];
+      pointerMove(touch.clientX);
+    },
+    { passive: true }
+  );
+
+  slider.addEventListener(
     "touchend",
     () => {
-      syncIndexFromScroll();
-      scheduleAutoRestart();
+      pointerUp();
+    },
+    { passive: true }
+  );
+
+  slider.addEventListener("mouseleave", () => {
+    if (isDragging) {
+      pointerUp();
+    } else {
+      restartAutoScroll(1500);
+    }
+  });
+
+  slider.addEventListener("mouseenter", () => {
+    stopAutoScroll();
+  });
+
+  slider.addEventListener("dragstart", (event) => {
+    event.preventDefault();
+  });
+
+  slider.querySelectorAll("img").forEach((img) => {
+    img.addEventListener("dragstart", (event) => {
+      event.preventDefault();
+    });
+  });
+
+  slider.addEventListener(
+    "scroll",
+    () => {
+      if (!isDragging) {
+        currentIndex = getCurrentIndexFromScroll();
+        updateDots(currentIndex);
+      }
     },
     { passive: true }
   );
@@ -328,7 +370,7 @@ function setupAboutCarousel() {
     goToSlide(currentIndex, "auto");
   });
 
-  updateDots(currentIndex);
+  updateDots(0);
   goToSlide(0, "auto");
-  startAutoSlide();
+  startAutoScroll();
 }
