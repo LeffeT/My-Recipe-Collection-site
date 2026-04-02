@@ -53,7 +53,7 @@ function setupLanguage() {
       metaDescription:
         "My Recipes is your personal cookbook on your phone. Create, save, and organize your favorite recipes in a simple and elegant way.",
       navFeatures: "Features",
-      navAbout: "About",
+      navAbout: "About the app",
       navDownload: "Download",
       heroTitle: "Your personal cookbook on your phone",
       heroText:
@@ -90,8 +90,6 @@ function setupLanguage() {
   };
 
   const langButtons = document.querySelectorAll(".lang-btn");
-  if (!langButtons.length) return;
-
   const savedLanguage = localStorage.getItem("preferredLanguage");
   const browserLanguage = (navigator.language || "sv").toLowerCase();
   const initialLanguage =
@@ -113,6 +111,13 @@ function setupLanguage() {
       const key = element.getAttribute("data-i18n");
       if (content[key]) {
         element.textContent = content[key];
+      }
+    });
+
+    document.querySelectorAll("img[data-img-sv][data-img-en]").forEach((img) => {
+      const newSrc = selected === "en" ? img.dataset.imgEn : img.dataset.imgSv;
+      if (img.getAttribute("src") !== newSrc) {
+        img.setAttribute("src", newSrc);
       }
     });
 
