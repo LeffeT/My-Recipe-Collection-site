@@ -39,6 +39,7 @@ body {
   display: flex;
   align-items: center;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 .nav-links a {
@@ -66,6 +67,40 @@ body {
 
 .nav-links a:hover::after {
   width: 100%;
+}
+
+.language-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 8px;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.lang-btn {
+  border: none;
+  background: transparent;
+  color: #222;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.lang-btn:hover {
+  background: rgba(217, 119, 6, 0.1);
+}
+
+.lang-btn.active {
+  background: #d97706;
+  color: #fff;
 }
 
 .hero-content {
@@ -231,6 +266,7 @@ body {
   font-size: 1.1rem;
   color: #4f4f4f;
 }
+
 .about-carousel {
   margin-top: 40px;
   overflow: hidden;
@@ -246,6 +282,8 @@ body {
   scrollbar-width: none;
   user-select: none;
   cursor: grab;
+  touch-action: pan-y;
+  overscroll-behavior-x: contain;
 }
 
 .about-slider::-webkit-scrollbar {
@@ -349,7 +387,6 @@ body {
   transform: scale(1.15);
 }
 
-
 .footer {
   text-align: center;
   padding: 30px 20px 40px;
@@ -374,7 +411,6 @@ body {
   }
 
   .nav-links {
-    flex-wrap: wrap;
     justify-content: center;
     gap: 14px;
   }
@@ -445,5 +481,9 @@ body {
 
   .about-slide p {
     font-size: 1rem;
+  }
+
+  .language-switcher {
+    margin-left: 0;
   }
 }
