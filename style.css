@@ -231,7 +231,6 @@ body {
   font-size: 1.1rem;
   color: #4f4f4f;
 }
-
 .about-carousel {
   margin-top: 40px;
   overflow: hidden;
@@ -260,6 +259,7 @@ body {
 
 .about-slide {
   flex: 0 0 100%;
+  min-width: 100%;
   max-width: 100%;
   scroll-snap-align: center;
   scroll-snap-stop: always;
@@ -348,6 +348,7 @@ body {
   background: #d97706;
   transform: scale(1.15);
 }
+
 
 .footer {
   text-align: center;
