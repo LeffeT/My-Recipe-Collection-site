@@ -2,6 +2,8 @@ console.log("Mina Recept landing page loaded.");
 
 const aboutSlider = document.getElementById("aboutSlider");
 const aboutDots = document.querySelectorAll(".about-dot");
+const aboutPrev = document.getElementById("aboutPrev");
+const aboutNext = document.getElementById("aboutNext");
 
 if (aboutSlider && aboutDots.length) {
   const slides = document.querySelectorAll(".about-slide");
@@ -74,26 +76,42 @@ if (aboutSlider && aboutDots.length) {
     });
   });
 
+  if (aboutPrev) {
+    aboutPrev.addEventListener("click", () => {
+      isInteracting = true;
+      stopAutoSlide();
+
+      currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+      goToSlide(currentIndex);
+
+      setTimeout(() => {
+        isInteracting = false;
+        startAutoSlide();
+      }, 4000);
+    });
+  }
+
+  if (aboutNext) {
+    aboutNext.addEventListener("click", () => {
+      isInteracting = true;
+      stopAutoSlide();
+
+      currentIndex = (currentIndex + 1) % slides.length;
+      goToSlide(currentIndex);
+
+      setTimeout(() => {
+        isInteracting = false;
+        startAutoSlide();
+      }, 4000);
+    });
+  }
+
   aboutSlider.addEventListener("touchstart", () => {
     isInteracting = true;
     stopAutoSlide();
   });
 
   aboutSlider.addEventListener("touchend", () => {
-    updateCurrentSlideFromScroll();
-
-    setTimeout(() => {
-      isInteracting = false;
-      startAutoSlide();
-    }, 4000);
-  });
-
-  aboutSlider.addEventListener("mousedown", () => {
-    isInteracting = true;
-    stopAutoSlide();
-  });
-
-  aboutSlider.addEventListener("mouseup", () => {
     updateCurrentSlideFromScroll();
 
     setTimeout(() => {
