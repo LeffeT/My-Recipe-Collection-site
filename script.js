@@ -49,13 +49,13 @@ function setupLanguage() {
     },
     en: {
       htmlLang: "en",
-      pageTitle: "My Recipes – Your personal cookbook on your phone",
+      pageTitle: "My Recipes – Your personal recipe collection",
       metaDescription:
-        "My Recipes is your personal cookbook on your phone. Create, save, and organize your favorite recipes in a simple and elegant way.",
+        "My Recipes is Your personal recipe collection. Create, save, and organize your favorite recipes in a simple and elegant way.",
       navFeatures: "Features",
       navAbout: "About the app",
       navDownload: "Download",
-      heroTitle: "Your personal cookbook on your phone",
+      heroTitle: "Your personal recipe collection",
       heroText:
         "Create, save, and organize your favorite recipes in a simple and elegant way. Keep everything in one place, always close at hand. Easily share recipes with family and friends.",
       heroPrimaryBtn: "Download the app",
