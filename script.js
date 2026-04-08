@@ -38,7 +38,7 @@ function setupLanguage() {
         "Samla dina recept på ett ställe och få bättre ordning i vardagen.",
       slide2Title: "Följ recepten enkelt",
       slide2Text:
-        "följ en checklista så du inte glömmer nått i en tydlig och lugn layout.",
+        "Följ en checklista så du inte glömmer nått i en tydlig och lugn layout.",
       slide3Title: "Anpassa appen",
       slide3Text:
         "Justera appen efter dina behov och ha dina recept nära till hands.",
