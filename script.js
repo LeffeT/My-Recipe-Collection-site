@@ -1,91 +1,147 @@
-console.log("Mina Recept landing page loaded.");
+console.log("Min Receptsamling landing page loaded.");
 
 document.addEventListener("DOMContentLoaded", () => {
-  setupLanguage();
   setupAboutCarousel();
+  setupLanguage();
 });
 
 function setupLanguage() {
   const translations = {
     sv: {
       htmlLang: "sv",
-      pageTitle: "Mina Recept – Din personliga receptsamling",
+      brandName: "Min Receptsamling",
+      pageTitle: "Min Receptsamling - Din personliga receptsamling",
       metaDescription:
-        "Mina Recept är din personliga receptsamling. Skapa, spara och organisera dina favoritrecept enkelt och stilrent.",
-      navFeatures: "Funktioner",
+        "Min Receptsamling är din personliga receptsamling - helt privat. Ingen inloggning, ingen spårning och ingen reklam. Alla recept sparas lokalt på din enhet.",
+      navFeatures: "Fördelar",
       navAbout: "Om appen",
-      navDownload: "Ladda ner",
-      heroTitle: "Din personliga receptsamling",
+      heroKicker: "Ingen inloggning. Ingen spårning. Ingen reklam.",
+      heroTitle: "Din personliga receptsamling – helt privat",
       heroText:
-        "Skapa, spara och organisera dina favoritrecept på ett enkelt och stilrent sätt. Ha allt samlat på ett ställe, alltid nära till hands. Dela enkelt recept med familj och vänner.",
-      heroPrimaryBtn: "Ladda ner appen",
-      heroSecondaryBtn: "Läs mer",
-      featuresTitle: "Funktioner",
-      feature1Title: "Skapa recept",
-      feature1Text:
-        "Skriv in ingredienser, instruktioner och portioner på ett tydligt sätt.",
-      feature2Title: "Spara favoriter",
-      feature2Text:
-        "Samla dina bästa recept i en egen digital receptsamling.",
-      feature3Title: "Enkelt att använda",
-      feature3Text:
-        "Ren design som gör att recepten är lätta att läsa medan du lagar mat.",
+        "Sparas på din enhet och synkas med iCloud mellan dina enheter, så att recepten alltid finns nära till hands. Kom igång direkt — inget konto behövs.",
+      heroBenefit1: "Privat som standard",
+      heroBenefit2: "Ingen reklam",
+      heroBenefit3: "Ingen datainsamling",
+      heroBenefit4: "Ingen spårning",
+      visualLabel: "Privat och enkel i mobilen",
+      previewLabel: "Karusell med appvyer från Min Receptsamling",
+      heroImageAlt: "Min Receptsamling app",
+      visualCaptionTitle: "Allt stannar hos dig",
+      visualCaptionText:
+        "Recepten sparas på din enhet så att du kan laga mat utan konto, reklam eller störningar.",
+      featuresLabel: "Det som gör skillnad",
+      featuresTitle: "Full kontroll över dina recept",
+      featuresIntro:
+        "Din data stannar hos dig. Recepten sparas på din enhet och kan synkas säkert med iCloud mellan dina enheter. Ingen inloggning, ingen reklam och ingen spårning — bara dina recept, alltid nära till hands.",
+      feature1Title: "Privat som standard",
+      feature1Point1: "Alla recept sparas lokalt på din enhet",
+      feature1Point2: "Ingen data skickas till servrar",
+      feature2Title: "Inga konton",
+      feature2Point1: "Börja direkt – ingen registrering",
+      feature2Point2: "Inget lösenord att hålla reda på",
+      feature3Title: "Ingen reklam",
+      feature3Point1: "Inga banners, inga popups",
+      feature3Point2: "Fokus på matlagning, inte annonser",
+      feature4Title: "Snabb & enkel",
+      feature4Point1: "Fungerar offline",
+      feature4Point2: "Anpassa portioner direkt",
+      aboutLabel: "Se appen",
       aboutTitle: "Om appen",
       aboutText:
-        "Mina Recept hjälper dig att samla, organisera och använda dina favoritrecept på ett enkelt och tydligt sätt. Här är några exempel på hur appen fungerar.",
-      slide1Title: "Skapa och samla recept",
+        "Bläddra igenom några vyer och få en känsla för hur Min Receptsamling håller recepten tydliga, inspirerande och nära till hands.",
+      slide1Title: "Skapa och samla",
       slide1Text:
-        "Samla dina recept på ett ställe och få bättre ordning i vardagen.",
-      slide2Title: "Följ recepten enkelt",
+        "Bygg upp din egen receptbok och håll ordning på allt du vill laga igen.",
+      slide2Title: "Följ steg för steg",
       slide2Text:
-        "Följ en checklista så du inte glömmer nått i en tydlig och lugn layout.",
-      slide3Title: "Anpassa appen",
+        "Instruktioner, ingredienser och checklista ligger där du behöver dem.",
+      slide3Title: "Hitta favoritkänslan",
       slide3Text:
-        "Justera appen efter dina behov och ha dina recept nära till hands.",
-      downloadTitle: "Ladda ner appen",
-      downloadText: "Hämta appen på App Store.",
-      downloadBtn: "Ladda ner på App Store",
-      footerText: "© 2026 Min Receptsamling. Alla rättigheter förbehållna."
+        "Bilder och tydliga receptkort gör det lätt att välja vad du vill laga nästa gång.",
+      slide4Title: "Få matinspiration",
+      slide4Text:
+        "Bläddra bland dina rätter och hitta snabbt något du vill laga igen.",
+      downloadLabel: "Redo att börja?",
+      downloadTitle: "Ladda ner Min Receptsamling",
+      downloadText:
+        "Ladda ner appen och kom igång direkt utan konto, reklam eller spårning.",
+      downloadBtn: "Öppna App Store",
+      downloadBtnAria: "Ladda ner Min Receptsamling på App Store",
+      downloadQrAria: "Öppna Min Receptsamling i App Store",
+      downloadQrAlt: "QR-kod till Min Receptsamling på App Store",
+      downloadQrTitle: "Skanna QR-koden",
+      downloadQrText:
+        "Öppna kameran på mobilen för att komma direkt till appen.",
+      footerText: "© 2026 Min Receptsamling. Alla rättigheter förbehållna.",
+      dotLabel: "Visa bild"
     },
     en: {
       htmlLang: "en",
-      pageTitle: "My Recipes – Your personal recipe collection",
+      brandName: "My Recipe Collection App",
+      pageTitle: "My Recipe Collection App - Your personal recipe collection",
       metaDescription:
-        "My Recipes is Your personal recipe collection. Create, save, and organize your favorite recipes in a simple and elegant way.",
-      navFeatures: "Features",
+        "My Recipe Collection App is your personal recipe collection - completely private. No login, no tracking, no ads. All recipes are stored locally on your device.",
+      navFeatures: "Benefits",
       navAbout: "About the app",
-      navDownload: "Download",
-      heroTitle: "Your personal recipe collection",
+      heroKicker: "No login. No tracking. No ads.",
+      heroTitle: "Your personal recipe collection – completely private",
       heroText:
-        "Create, save, and organize your favorite recipes in a simple and elegant way. Keep everything in one place, always close at hand. Easily share recipes with family and friends.",
-      heroPrimaryBtn: "Download the app",
-      heroSecondaryBtn: "Learn more",
-      featuresTitle: "Features",
-      feature1Title: "Create recipes",
-      feature1Text:
-        "Add ingredients, instructions, and servings in a clear and simple way.",
-      feature2Title: "Save favorites",
-      feature2Text:
-        "Collect your best recipes in your own digital recipe collection.",
-      feature3Title: "Easy to use",
-      feature3Text:
-        "A clean design that makes recipes easy to read while you cook.",
+        "Stored on your device and synced with iCloud across your devices, so your recipes are always within reach. Get started right away — no account needed.",
+      heroBenefit1: "Private by default",
+      heroBenefit2: "No ads",
+      heroBenefit3: "No data collection",
+      heroBenefit4: "No tracking",
+      visualLabel: "Private and simple on your phone",
+      previewLabel: "Carousel with previews of My Recipe Collection App",
+      heroImageAlt: "My Recipe Collection App",
+      visualCaptionTitle: "Everything stays with you",
+      visualCaptionText:
+        "Your recipes stay on your device, so you can cook without accounts, ads, or distractions.",
+      featuresLabel: "What stands out",
+      featuresTitle: "Full control over your recipes",
+      featuresIntro:
+        "Your data stays with you. Recipes are stored on your device and can be securely synced with iCloud across your devices. No login, no ads, and no tracking — just your recipes, always within reach.",
+      feature1Title: "Private by default",
+      feature1Point1: "All recipes are stored locally on your device",
+      feature1Point2: "No data is sent to servers",
+      feature2Title: "No accounts",
+      feature2Point1: "Get started right away – no sign-up required",
+      feature2Point2: "No password to remember",
+      feature3Title: "No ads",
+      feature3Point1: "No banners, no pop-ups",
+      feature3Point2: "Focus on cooking, not advertising",
+      feature4Title: "Fast & simple",
+      feature4Point1: "Works offline",
+      feature4Point2: "Adjust servings instantly",
+      aboutLabel: "See the app",
       aboutTitle: "About the app",
       aboutText:
-        "My Recipes helps you collect, organize, and use your favorite recipes in a simple and clear way. Here are a few examples of how the app works.",
-      slide1Title: "Create and collect recipes",
+        "Browse a few views and get a feel for how My Recipe Collection App keeps your recipes clear, inspiring, and close at hand.",
+      slide1Title: "Create and collect",
       slide1Text:
-        "Keep your recipes in one place and bring more order to everyday cooking.",
-      slide2Title: "Follow recipes easily",
+        "Build your own recipe book and keep track of everything you want to cook again.",
+      slide2Title: "Follow step by step",
       slide2Text:
-        "Follow a checklist so you don’t forget anything, presented in a clear and calm layout.",
-      slide3Title: "Customize the app",
+        "Instructions, ingredients, and your checklist stay right where you need them.",
+      slide3Title: "Find your favorites",
       slide3Text:
-        "Adjust the app to your needs and keep your recipes close at hand.",
-      downloadTitle: "Download the app",
-      downloadText: "Get the app on the App Store.",
-      downloadBtn: "Download on the App Store",
-      footerText: "© 2026 My Recipe Collection. All rights reserved."
+        "Images and clear recipe cards make it easy to choose what you want to cook next.",
+      slide4Title: "Get inspired",
+      slide4Text:
+        "Browse your dishes and quickly find something you want to cook again.",
+      downloadLabel: "Ready to start?",
+      downloadTitle: "Download My Recipe Collection App",
+      downloadText:
+        "Download the app and get started right away without an account, ads, or tracking.",
+      downloadBtn: "Open App Store",
+      downloadBtnAria: "Download My Recipe Collection App on the App Store",
+      downloadQrAria: "Open My Recipe Collection App on the App Store",
+      downloadQrAlt: "QR code for My Recipe Collection App on the App Store",
+      downloadQrTitle: "Scan the QR code",
+      downloadQrText:
+        "Open your phone camera to go straight to the app.",
+      footerText: "© 2026 My Recipe Collection App. All rights reserved.",
+      dotLabel: "Show image"
     }
   };
 
@@ -114,11 +170,29 @@ function setupLanguage() {
       }
     });
 
+    document.querySelectorAll("[data-i18n-aria-label]").forEach((element) => {
+      const key = element.getAttribute("data-i18n-aria-label");
+      if (content[key]) {
+        element.setAttribute("aria-label", content[key]);
+      }
+    });
+
+    document.querySelectorAll("[data-i18n-alt]").forEach((element) => {
+      const key = element.getAttribute("data-i18n-alt");
+      if (content[key]) {
+        element.setAttribute("alt", content[key]);
+      }
+    });
+
     document.querySelectorAll("img[data-img-sv][data-img-en]").forEach((img) => {
       const newSrc = selected === "en" ? img.dataset.imgEn : img.dataset.imgSv;
       if (img.getAttribute("src") !== newSrc) {
         img.setAttribute("src", newSrc);
       }
+    });
+
+    document.querySelectorAll(".about-dot").forEach((dot, index) => {
+      dot.setAttribute("aria-label", `${content.dotLabel} ${index + 1}`);
     });
 
     langButtons.forEach((button) => {
@@ -141,11 +215,22 @@ function setupLanguage() {
 
 function setupAboutCarousel() {
   const slider = document.getElementById("aboutSlider");
-  const dots = document.querySelectorAll(".about-dot");
-
-  if (!slider || !dots.length) return;
+  const dotsContainer = document.getElementById("aboutDots");
+  if (!slider || !dotsContainer) return;
 
   const slides = slider.querySelectorAll(".about-slide");
+  if (!slides.length) return;
+
+  dotsContainer.innerHTML = "";
+  slides.forEach((_, index) => {
+    const dot = document.createElement("button");
+    dot.type = "button";
+    dot.className = `about-dot${index === 0 ? " active" : ""}`;
+    dot.setAttribute("aria-label", `Visa bild ${index + 1}`);
+    dotsContainer.appendChild(dot);
+  });
+
+  const dots = dotsContainer.querySelectorAll(".about-dot");
 
   let currentIndex = 0;
   let autoScrollInterval = null;
@@ -221,10 +306,10 @@ function setupAboutCarousel() {
     autoScrollInterval = setInterval(() => {
       const nextIndex = currentIndex + 1 >= slides.length ? 0 : currentIndex + 1;
       goToSlide(nextIndex, "smooth");
-    }, 3500);
+    }, 4200);
   }
 
-  function restartAutoScroll(delay = 3500) {
+  function restartAutoScroll(delay = 4200) {
     if (restartTimeout) {
       clearTimeout(restartTimeout);
     }
@@ -257,7 +342,6 @@ function setupAboutCarousel() {
 
     slider.classList.add("dragging");
     stopAutoScroll();
-
     animationId = requestAnimationFrame(animation);
   }
 
@@ -284,15 +368,15 @@ function setupAboutCarousel() {
     const threshold = getSlideWidth() * 0.15;
 
     if (movedBy > threshold) {
-      currentIndex = clampIndex(currentIndex - 1);
-    } else if (movedBy < -threshold) {
       currentIndex = clampIndex(currentIndex + 1);
+    } else if (movedBy < -threshold) {
+      currentIndex = clampIndex(currentIndex - 1);
     } else {
       currentIndex = getCurrentIndexFromScroll();
     }
 
     goToSlide(currentIndex, "smooth");
-    restartAutoScroll(moved ? 4500 : 2500);
+    restartAutoScroll(moved ? 5000 : 2600);
   }
 
   slider.addEventListener("mousedown", (event) => {
@@ -342,7 +426,7 @@ function setupAboutCarousel() {
     if (isDragging) {
       pointerUp();
     } else {
-      restartAutoScroll(1500);
+      restartAutoScroll(1600);
     }
   });
 
