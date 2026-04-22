@@ -5,20 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta
     name="description"
-    content="Mina Recept är din personliga kokbok i mobilen. Skapa, spara och organisera dina favoritrecept enkelt och stilrent."
+    content="Min Receptsamling är din personliga receptsamling - helt privat. Ingen inloggning, ingen spårning och ingen reklam. Alla recept sparas lokalt på din enhet."
   />
-  <title>Mina Recept – Din personliga receptsamling</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#fff6ec" />
+  <title>Min Receptsamling - Din personliga receptsamling</title>
+  <link rel="stylesheet" href="style.css?v=13" />
 </head>
 <body>
   <header class="hero">
     <nav class="navbar">
-      <div class="logo">Mina Recept</div>
+      <a class="logo" href="#" data-i18n="brandName">Min Receptsamling</a>
 
-      <div class="nav-links">
-        <a href="#features" data-i18n="navFeatures">Funktioner</a>
-        <a href="#about" data-i18n="navAbout">Om appen</a>
-        <a href="#download" data-i18n="navDownload">Ladda ner</a>
+      <div class="nav-actions">
+        <div class="nav-links">
+          <a href="#features" data-i18n="navFeatures">Fördelar</a>
+          <a href="#about" data-i18n="navAbout">Om appen</a>
+        </div>
 
         <div class="language-switcher" aria-label="Språkväxlare / Language switcher">
           <button
@@ -43,35 +45,116 @@
 
     <div class="hero-content">
       <div class="hero-text">
-        <h1 data-i18n="heroTitle">Din personliga receptsamling</h1>
-        <p data-i18n="heroText">
-          Skapa, spara och organisera dina favoritrecept på ett enkelt och
-          stilrent sätt. Ha allt samlat på ett ställe, alltid nära till hands.
-          Dela enkelt recept med familj och vänner.
+        <h1 data-i18n="heroTitle">
+          Din personliga receptsamling – helt privat
+        </h1>
+        <p class="hero-kicker" data-i18n="heroKicker">
+          Ingen inloggning. Ingen spårning. Ingen reklam.
+        </p>
+        <p class="hero-lead" data-i18n="heroText">
+          Sparas på din enhet och synkas med iCloud mellan dina enheter, så att
+          recepten alltid finns nära till hands. Kom igång direkt — inget konto behövs.
         </p>
 
-        <div class="hero-buttons">
-          <a href="https://apps.apple.com/se/app/min-receptsamling/id6758587009"
-          target="_blank"
-          class="btn primary"
-          data-i18n="heroPrimaryBtn">
-          Ladda ner appen
-          </a>
-          <a href="#features" class="btn secondary" data-i18n="heroSecondaryBtn">
-            Läs mer
-          </a>
+        <div class="hero-benefits" aria-label="Fördelar">
+          <span data-i18n="heroBenefit1">Privat som standard</span>
+          <span data-i18n="heroBenefit2">Ingen reklam</span>
+          <span data-i18n="heroBenefit3">Ingen datainsamling</span>
+          <span data-i18n="heroBenefit4">Ingen spårning</span>
         </div>
       </div>
 
-      <div class="phone-mockup" aria-label="Förhandsvisning av appen Mina Recept">
-        <div class="phone-screen">
-          <img
-            src="IMG_appsida-sv.jpg"
-            alt="Mina Recept app"
-            class="app-image"
-            data-img-sv="IMG_appsida-sv.jpg"
-            data-img-en="IMG_appsida-en.jpg"
-          />
+      <div class="hero-visual">
+        <div class="visual-panel">
+          <p class="visual-label" data-i18n="visualLabel">
+            Privat och enkel i mobilen
+          </p>
+
+          <div class="about-carousel hero-carousel">
+            <div
+              class="about-slider"
+              id="aboutSlider"
+              aria-label="Förhandsvisning av appen Min Receptsamling"
+              data-i18n-aria-label="previewLabel"
+            >
+              <div class="about-slide">
+                <div class="about-phone">
+                  <div class="about-phone-screen">
+                    <img
+                      src="IMG_appsida-sv.jpg"
+                      alt="Skapa och samla recept"
+                      class="about-phone-image"
+                      draggable="false"
+                      data-img-sv="IMG_appsida-sv.jpg"
+                      data-img-en="IMG_appsida-en.jpg"
+                    />
+                  </div>
+                </div>
+                <h3 data-i18n="slide1Title">Skapa och samla</h3>
+                <p data-i18n="slide1Text">
+                  Bygg upp din egen receptbok och håll ordning på allt du vill laga igen.
+                </p>
+              </div>
+
+              <div class="about-slide">
+                <div class="about-phone">
+                  <div class="about-phone-screen">
+                    <img
+                      src="IMG_detaljvy-sv.jpg"
+                      alt="Följ steg för steg"
+                      class="about-phone-image"
+                      draggable="false"
+                      data-img-sv="IMG_detaljvy-sv.jpg"
+                      data-img-en="IMG_detaljvy-en.jpg"
+                    />
+                  </div>
+                </div>
+                <h3 data-i18n="slide2Title">Följ steg för steg</h3>
+                <p data-i18n="slide2Text">
+                  Instruktioner, ingredienser och checklista ligger där du behöver dem.
+                </p>
+              </div>
+
+              <div class="about-slide">
+                <div class="about-phone">
+                  <div class="about-phone-screen">
+                    <img
+                      src="IMG_plankstek-sv.jpg"
+                      alt="Hitta favoriter"
+                      class="about-phone-image"
+                      draggable="false"
+                      data-img-sv="IMG_plankstek-sv.jpg"
+                      data-img-en="IMG_pannkakor-en.jpg"
+                    />
+                  </div>
+                </div>
+                <h3 data-i18n="slide3Title">Hitta favoritkänslan</h3>
+                <p data-i18n="slide3Text">
+                  Bilder och tydliga receptkort gör det lätt att välja vad du vill laga nästa gång.
+                </p>
+              </div>
+
+              <div class="about-slide">
+                <div class="about-phone">
+                  <div class="about-phone-screen">
+                    <img
+                      src="IMG_lasagne-sv.jpg"
+                      alt="Få inspiration till nästa middag"
+                      class="about-phone-image"
+                      draggable="false"
+                      data-img-sv="IMG_lasagne-sv.jpg"
+                      data-img-en="IMG_lasagne-sv.jpg"
+                    />
+                  </div>
+                </div>
+                <h3 data-i18n="slide4Title">Få matinspiration</h3>
+                <p data-i18n="slide4Text">
+                  Bläddra bland dina rätter och hitta snabbt något du vill laga igen.
+                </p>
+              </div>
+            </div>
+            <div class="about-dots" id="aboutDots"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -79,138 +162,104 @@
 
   <main>
     <section id="features" class="section">
-      <h2 data-i18n="featuresTitle">Funktioner</h2>
+      <p class="section-label" data-i18n="featuresLabel">Det som gör skillnad</p>
+      <h2 data-i18n="featuresTitle">Full kontroll över dina recept</h2>
+      <p class="section-intro" data-i18n="featuresIntro">
+        Din data stannar hos dig. Appen fungerar utan konto och utan internet,
+        och innehåller ingen reklam eller spårning.
+      </p>
 
       <div class="features-grid">
         <article class="feature-box">
-          <h3 data-i18n="feature1Title">Skapa recept</h3>
-          <p data-i18n="feature1Text">
-            Skriv in ingredienser, instruktioner och portioner på ett tydligt sätt.
-          </p>
+          <h3 data-i18n="feature1Title">Privat som standard</h3>
+          <ul class="feature-list">
+            <li data-i18n="feature1Point1">Alla recept sparas lokalt på din enhet</li>
+            <li data-i18n="feature1Point2">Ingen data skickas till servrar</li>
+          </ul>
         </article>
 
         <article class="feature-box">
-          <h3 data-i18n="feature2Title">Spara favoriter</h3>
-          <p data-i18n="feature2Text">
-            Samla dina bästa recept i en egen digital receptsamling.
-          </p>
+          <h3 data-i18n="feature2Title">Inga konton</h3>
+          <ul class="feature-list">
+            <li data-i18n="feature2Point1">Börja direkt – ingen registrering</li>
+            <li data-i18n="feature2Point2">Inget lösenord att hålla reda på</li>
+          </ul>
         </article>
 
         <article class="feature-box">
-          <h3 data-i18n="feature3Title">Enkelt att använda</h3>
-          <p data-i18n="feature3Text">
-            Ren design som gör att recepten är lätta att läsa medan du lagar mat.
-          </p>
+          <h3 data-i18n="feature3Title">Ingen reklam</h3>
+          <ul class="feature-list">
+            <li data-i18n="feature3Point1">Inga banners, inga popups</li>
+            <li data-i18n="feature3Point2">Fokus på matlagning, inte annonser</li>
+          </ul>
+        </article>
+
+        <article class="feature-box">
+          <h3 data-i18n="feature4Title">Snabb & enkel</h3>
+          <ul class="feature-list">
+            <li data-i18n="feature4Point1">Fungerar offline</li>
+            <li data-i18n="feature4Point2">Anpassa portioner direkt</li>
+          </ul>
         </article>
       </div>
     </section>
 
     <section id="about" class="section alt">
+      <p class="section-label" data-i18n="aboutLabel">Se appen</p>
       <h2 data-i18n="aboutTitle">Om appen</h2>
 
       <p class="about-text" data-i18n="aboutText">
-        Mina Recept hjälper dig att samla, organisera och använda dina favoritrecept
-        på ett enkelt och tydligt sätt. Här är några exempel på hur appen fungerar.
+        Bläddra igenom några vyer och få en känsla för hur Min Receptsamling
+        håller recepten tydliga, inspirerande och nära till hands.
       </p>
-
-      <div class="about-carousel">
-        <div class="about-slider" id="aboutSlider" aria-label="Bildkarusell">
-          <div class="about-slide">
-            <div class="about-phone">
-              <div class="about-phone-screen">
-                <img
-                  src="IMG_appsida-sv.jpg"
-                  alt="Skapa och samla recept"
-                  class="about-phone-image"
-                  draggable="false"
-                  data-img-sv="IMG_appsida-sv.jpg"
-                  data-img-en="IMG_appsida-en.jpg"
-                />
-              </div>
-            </div>
-            <h3 data-i18n="slide1Title">Skapa och samla recept</h3>
-            <p data-i18n="slide1Text">
-              Samla dina recept på ett ställe och få bättre ordning i vardagen.
-            </p>
-          </div>
-
-          <div class="about-slide">
-            <div class="about-phone">
-              <div class="about-phone-screen">
-                <img
-                  src="IMG_detaljvy-sv.jpg"
-                  alt="Följ recepten enkelt"
-                  class="about-phone-image"
-                  draggable="false"
-                  data-img-sv="IMG_detaljvy-sv.jpg"
-                  data-img-en="IMG_detaljvy-en.jpg"
-                />
-              </div>
-            </div>
-            <h3 data-i18n="slide2Title">Följ recepten enkelt</h3>
-            <p data-i18n="slide2Text">
-             Följ en checklista så du inte glömmer nått i en tydlig och lugn layout.
-            </p>
-          </div>
-<div class="about-slide">
-            <div class="about-phone">
-              <div class="about-phone-screen">
-                <img
-                  src="IMG_prinsess-sv.jpg"
-                  alt="Följ recepten enkelt"
-                  class="about-phone-image"
-                  draggable="false"
-                  data-img-sv="IMG_prinsess-sv.jpg"
-                  data-img-en="IMG_prinsess-en.jpg"
-                />
-              </div>
-            </div>
-            <h3 data-i18n="slide2Title">Följ recepten enkelt</h3>
-            <p data-i18n="slide2Text">
-             Följ en checklista så du inte glömmer nått i en tydlig och lugn layout.
-            </p>
-          </div> 
-          
-          <div class="about-slide">
-            <div class="about-phone">
-              <div class="about-phone-screen">
-                <img
-                  src="IMG_plankstek-sv.jpg"
-                  alt="Anpassa appen"
-                  class="about-phone-image"
-                  draggable="false"
-                  data-img-sv="IMG_plankstek-sv.jpg"
-                  data-img-en="IMG_pannkakor-en.jpg"
-                />
-              </div>
-            </div>
-            <h3 data-i18n="slide3Title">Anpassa appen</h3>
-            <p data-i18n="slide3Text">
-              Justera appen efter dina behov och ha dina recept nära till hands.
-            </p>
-          </div>
-        </div>
-
-        <div class="about-dots" id="aboutDots">
-          <button class="about-dot active" type="button" aria-label="Visa bild 1"></button>
-          <button class="about-dot" type="button" aria-label="Visa bild 2"></button>
-          <button class="about-dot" type="button" aria-label="Visa bild 3"></button>
-          <button class="about-dot" type="button" aria-label="Visa bild 4"></button>
-        </div>
-      </div>
     </section>
 
     <section id="download" class="section">
-      <h2 data-i18n="downloadTitle">Ladda ner appen</h2>
-      <a 
-  href="https://apps.apple.com/se/app/mina-recept/id6758587009"
-  target="_blank"
-  class="btn primary"
-  aria-label="Ladda ner Mina Recept på App Store"
-  data-i18n="downloadBtn"
->
-  Ladda ner på App Store nu
-</a>
+      <div class="download-card">
+        <p class="section-label" data-i18n="downloadLabel">Redo att börja?</p>
+        <h2 data-i18n="downloadTitle">Ladda ner Min Receptsamling</h2>
+        <p class="download-text" data-i18n="downloadText">
+          Ladda ner appen och kom igång direkt utan konto, reklam eller spårning.
+        </p>
+        <div class="download-layout">
+          <div class="download-main">
+            <a
+              href="https://apps.apple.com/se/app/min-receptsamling/id6758587009"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn primary"
+              aria-label="Ladda ner Min Receptsamling på App Store"
+              data-i18n="downloadBtn"
+              data-i18n-aria-label="downloadBtnAria"
+            >
+              Öppna App Store
+            </a>
+          </div>
+
+          <a
+            class="download-qr"
+            href="https://apps.apple.com/se/app/min-receptsamling/id6758587009"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Öppna Min Receptsamling i App Store"
+            data-i18n-aria-label="downloadQrAria"
+          >
+            <img
+              class="qr-code"
+              src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fapps.apple.com%2Fse%2Fapp%2Fmin-receptsamling%2Fid6758587009"
+              alt="QR-kod till Min Receptsamling på App Store"
+              width="180"
+              height="180"
+              loading="lazy"
+              data-i18n-alt="downloadQrAlt"
+            />
+            <span class="qr-title" data-i18n="downloadQrTitle">Skanna QR-koden</span>
+            <span class="qr-text" data-i18n="downloadQrText">
+              Öppna kameran på mobilen för att komma direkt till appen.
+            </span>
+          </a>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -218,6 +267,6 @@
     <p data-i18n="footerText">© 2026 Min Receptsamling. Alla rättigheter förbehållna.</p>
   </footer>
 
-<script src="script.js?v=3"></script>
+  <script src="script.js?v=7"></script>
 </body>
 </html>
