@@ -254,6 +254,13 @@ function setupShowcaseGallery() {
 
   let activeIndex = 0;
   let closeTimeout = 0;
+  let isDragging = false;
+  let moved = false;
+  let startX = 0;
+  let currentTranslate = 0;
+  let previousTranslate = 0;
+  let animationId = 0;
+  let suppressClickUntil = 0;
 
   track.innerHTML = "";
 
@@ -291,6 +298,76 @@ function setupShowcaseGallery() {
     const firstCard = track.querySelector(".showcase-card");
     if (!firstCard) return 0;
     return firstCard.getBoundingClientRect().width + getTrackGap();
+  }
+
+  function clampIndex(index) {
+    return Math.max(0, Math.min(index, cardButtons.length - 1));
+  }
+
+  function setTrackPosition(value) {
+    track.scrollLeft = value;
+  }
+
+  function animation() {
+    if (!isDragging) return;
+    setTrackPosition(currentTranslate);
+    animationId = requestAnimationFrame(animation);
+  }
+
+  function pointerDown(clientX) {
+    isDragging = true;
+    moved = false;
+    startX = clientX;
+    previousTranslate = track.scrollLeft;
+    currentTranslate = previousTranslate;
+
+    track.classList.add("dragging");
+    animationId = requestAnimationFrame(animation);
+  }
+
+  function pointerMove(clientX) {
+    if (!isDragging) return;
+
+    const diff = clientX - startX;
+
+    if (Math.abs(diff) > 6) {
+      moved = true;
+    }
+
+    currentTranslate = previousTranslate - diff;
+  }
+
+  function pointerUp() {
+    if (!isDragging) return;
+
+    isDragging = false;
+    track.classList.remove("dragging");
+    cancelAnimationFrame(animationId);
+
+    const step = getCardStep();
+
+    if (moved && step) {
+      const movedBy = currentTranslate - previousTranslate;
+      const threshold = step * 0.12;
+      let currentIndex = clampIndex(Math.round(previousTranslate / step));
+
+      if (movedBy > threshold) {
+        currentIndex = clampIndex(currentIndex + 1);
+      } else if (movedBy < -threshold) {
+        currentIndex = clampIndex(currentIndex - 1);
+      } else {
+        currentIndex = clampIndex(Math.round(track.scrollLeft / step));
+      }
+
+      suppressClickUntil = Date.now() + 280;
+
+      track.scrollTo({
+        left: currentIndex * step,
+        behavior: "smooth"
+      });
+    }
+
+    updateNavButtons();
   }
 
   function updateNavButtons() {
@@ -406,7 +483,12 @@ function setupShowcaseGallery() {
   });
 
   cardButtons.forEach((button) => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", (event) => {
+      if (Date.now() < suppressClickUntil) {
+        event.preventDefault();
+        return;
+      }
+
       openLightbox(Number(button.dataset.index));
     });
   });
@@ -423,6 +505,75 @@ function setupShowcaseGallery() {
 
   track.addEventListener("scroll", updateNavButtons, { passive: true });
   window.addEventListener("resize", updateNavButtons);
+
+  track.addEventListener("mousedown", (event) => {
+    if (event.button !== 0) return;
+    event.preventDefault();
+    pointerDown(event.pageX);
+  });
+
+  window.addEventListener("mousemove", (event) => {
+    if (!isDragging) return;
+    event.preventDefault();
+    pointerMove(event.pageX);
+  });
+
+  window.addEventListener("mouseup", () => {
+    pointerUp();
+  });
+
+  track.addEventListener(
+    "touchstart",
+    (event) => {
+      const touch = event.touches[0];
+      if (!touch) return;
+      pointerDown(touch.clientX);
+    },
+    { passive: true }
+  );
+
+  track.addEventListener(
+    "touchmove",
+    (event) => {
+      if (!isDragging) return;
+      const touch = event.touches[0];
+      if (!touch) return;
+      pointerMove(touch.clientX);
+    },
+    { passive: true }
+  );
+
+  track.addEventListener(
+    "touchend",
+    () => {
+      pointerUp();
+    },
+    { passive: true }
+  );
+
+  track.addEventListener(
+    "touchcancel",
+    () => {
+      pointerUp();
+    },
+    { passive: true }
+  );
+
+  track.addEventListener("mouseleave", () => {
+    if (isDragging) {
+      pointerUp();
+    }
+  });
+
+  track.addEventListener("dragstart", (event) => {
+    event.preventDefault();
+  });
+
+  track.querySelectorAll("img").forEach((img) => {
+    img.addEventListener("dragstart", (event) => {
+      event.preventDefault();
+    });
+  });
 
   document.addEventListener("keydown", (event) => {
     if (lightbox.hidden) return;

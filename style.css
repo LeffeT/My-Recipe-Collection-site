@@ -718,10 +718,24 @@ main {
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
 }
 
 .showcase-track::-webkit-scrollbar {
   display: none;
+}
+
+.showcase-track.dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+}
+
+.showcase-track,
+.showcase-track * {
+  -webkit-user-drag: none;
 }
 
 .showcase-card {
@@ -745,6 +759,7 @@ main {
     inset 0 0 0 1px rgba(255, 255, 255, 0.24);
   cursor: pointer;
   transition: transform 0.32s ease, box-shadow 0.32s ease, filter 0.32s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .showcase-card-image {
