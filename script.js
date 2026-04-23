@@ -1,7 +1,10 @@
 console.log("Min Receptsamling landing page loaded.");
 
+let showcaseGallery = null;
+
 document.addEventListener("DOMContentLoaded", () => {
   setupAboutCarousel();
+  showcaseGallery = setupShowcaseGallery();
   setupLanguage();
 });
 
@@ -51,6 +54,11 @@ function setupLanguage() {
       aboutTitle: "Om appen",
       aboutText:
         "Bläddra igenom några vyer och få en känsla för hur Min Receptsamling håller recepten tydliga, inspirerande och nära till hands.",
+      showcaseTrackLabel: "Skärmbilder från appen Min Receptsamling",
+      showcasePrev: "Föregående skärmbild",
+      showcaseNext: "Nästa skärmbild",
+      showcaseClose: "Stäng bild",
+      showcaseOpen: "Öppna skärmbild",
       slide1Title: "Skapa och samla",
       slide1Text:
         "Bygg upp din egen receptbok och håll ordning på allt du vill laga igen.",
@@ -121,6 +129,11 @@ function setupLanguage() {
       aboutTitle: "About the app",
       aboutText:
         "Browse a few views and get a feel for how My Recipe Collection App keeps your recipes clear, inspiring, and close at hand.",
+      showcaseTrackLabel: "Screenshots from My Recipe Collection App",
+      showcasePrev: "Previous screenshot",
+      showcaseNext: "Next screenshot",
+      showcaseClose: "Close image",
+      showcaseOpen: "Open screenshot",
       slide1Title: "Create and collect",
       slide1Text:
         "Build your own recipe book and keep track of everything you want to cook again.",
@@ -205,6 +218,7 @@ function setupLanguage() {
       button.setAttribute("aria-pressed", String(isActive));
     });
 
+    showcaseGallery?.updateLanguage(selected, content);
     localStorage.setItem("preferredLanguage", selected);
   }
 
@@ -215,6 +229,229 @@ function setupLanguage() {
   });
 
   setLanguage(initialLanguage);
+}
+
+function setupShowcaseGallery() {
+  const track = document.getElementById("showcaseTrack");
+  const prevButton = document.querySelector("[data-showcase-prev]");
+  const nextButton = document.querySelector("[data-showcase-next]");
+  const lightbox = document.getElementById("showcaseLightbox");
+  const lightboxImage = document.getElementById("showcaseLightboxImage");
+  const closeTriggers = document.querySelectorAll("[data-showcase-close]");
+
+  if (!track || !lightbox || !lightboxImage) return null;
+
+  const showcaseItems = [
+    { sv: "01_sv.jpg", en: "01_en.jpg" },
+    { sv: "02_sv.jpg", en: "02_en.jpg" },
+    { sv: "03_sv.jpg", en: "03_en.jpg" },
+    { sv: "04_sv.jpg", en: "04_en.jpg" },
+    { sv: "05_sv.jpg", en: "05_en.jpg" },
+    { sv: "06-sv.jpg", en: "06_en.jpg" },
+    { sv: "07_sv.jpg", en: "07_en.jpg" },
+    { sv: "08_sv.jpg", en: "08_en.jpg" }
+  ];
+
+  let activeIndex = 0;
+  let closeTimeout = 0;
+
+  track.innerHTML = "";
+
+  showcaseItems.forEach((item, index) => {
+    const card = document.createElement("div");
+    card.className = "showcase-card";
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "showcase-card-button";
+    button.dataset.index = String(index);
+    button.dataset.resolvedSrc = item.sv;
+
+    const image = document.createElement("img");
+    image.className = "showcase-card-image";
+    image.src = item.sv;
+    image.alt = "";
+    image.loading = "lazy";
+    image.decoding = "async";
+    image.draggable = false;
+
+    button.appendChild(image);
+    card.appendChild(button);
+    track.appendChild(card);
+  });
+
+  const cardButtons = Array.from(track.querySelectorAll(".showcase-card-button"));
+
+  function getTrackGap() {
+    const styles = window.getComputedStyle(track);
+    return parseInt(styles.columnGap || styles.gap || "0", 10);
+  }
+
+  function getCardStep() {
+    const firstCard = track.querySelector(".showcase-card");
+    if (!firstCard) return 0;
+    return firstCard.getBoundingClientRect().width + getTrackGap();
+  }
+
+  function updateNavButtons() {
+    if (!prevButton || !nextButton) return;
+
+    const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth - 4);
+    prevButton.disabled = track.scrollLeft <= 4;
+    nextButton.disabled = track.scrollLeft >= maxScroll;
+  }
+
+  function loadShowcaseImage(button, lang) {
+    const index = Number(button.dataset.index);
+    const item = showcaseItems[index];
+    const image = button.querySelector(".showcase-card-image");
+    if (!image || !item) return;
+
+    const preferredSrc = lang === "en" ? item.en : item.sv;
+    const fallbackSrc = item.sv;
+
+    if (preferredSrc === fallbackSrc) {
+      image.src = fallbackSrc;
+      button.dataset.resolvedSrc = fallbackSrc;
+      if (!lightbox.hidden && activeIndex === index) {
+        lightboxImage.src = fallbackSrc;
+      }
+      return;
+    }
+
+    const requestId = String(Number(button.dataset.requestId || "0") + 1);
+    button.dataset.requestId = requestId;
+
+    const probe = new Image();
+    probe.onload = () => {
+      if (button.dataset.requestId !== requestId) return;
+      image.src = preferredSrc;
+      button.dataset.resolvedSrc = preferredSrc;
+      if (!lightbox.hidden && activeIndex === index) {
+        lightboxImage.src = preferredSrc;
+      }
+    };
+    probe.onerror = () => {
+      if (button.dataset.requestId !== requestId) return;
+      image.src = fallbackSrc;
+      button.dataset.resolvedSrc = fallbackSrc;
+      if (!lightbox.hidden && activeIndex === index) {
+        lightboxImage.src = fallbackSrc;
+      }
+    };
+    probe.src = preferredSrc;
+  }
+
+  function openLightbox(index) {
+    const nextIndex = Math.max(0, Math.min(index, cardButtons.length - 1));
+    const button = cardButtons[nextIndex];
+    if (!button) return;
+
+    window.clearTimeout(closeTimeout);
+    activeIndex = nextIndex;
+    lightboxImage.src =
+      button.dataset.resolvedSrc || button.querySelector(".showcase-card-image")?.src || "";
+
+    lightbox.hidden = false;
+    document.body.classList.add("showcase-modal-open");
+
+    requestAnimationFrame(() => {
+      lightbox.classList.add("is-visible");
+      lightbox.querySelector(".showcase-lightbox-close")?.focus();
+    });
+  }
+
+  function closeLightbox() {
+    if (lightbox.hidden) return;
+
+    lightbox.classList.remove("is-visible");
+    document.body.classList.remove("showcase-modal-open");
+
+    window.clearTimeout(closeTimeout);
+    closeTimeout = window.setTimeout(() => {
+      lightbox.hidden = true;
+      lightboxImage.removeAttribute("src");
+    }, 220);
+  }
+
+  function stepLightbox(direction) {
+    if (lightbox.hidden) return;
+
+    const nextIndex =
+      (activeIndex + direction + cardButtons.length) % Math.max(cardButtons.length, 1);
+    activeIndex = nextIndex;
+
+    const button = cardButtons[activeIndex];
+    if (!button) return;
+
+    lightboxImage.src =
+      button.dataset.resolvedSrc || button.querySelector(".showcase-card-image")?.src || "";
+    button.closest(".showcase-card")?.scrollIntoView({
+      behavior: "smooth",
+      inline: "center",
+      block: "nearest"
+    });
+  }
+
+  prevButton?.addEventListener("click", () => {
+    const step = getCardStep();
+    if (!step) return;
+    track.scrollBy({ left: -step, behavior: "smooth" });
+  });
+
+  nextButton?.addEventListener("click", () => {
+    const step = getCardStep();
+    if (!step) return;
+    track.scrollBy({ left: step, behavior: "smooth" });
+  });
+
+  cardButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      openLightbox(Number(button.dataset.index));
+    });
+  });
+
+  closeTriggers.forEach((trigger) => {
+    trigger.addEventListener("click", closeLightbox);
+  });
+
+  lightbox.addEventListener("click", (event) => {
+    if (event.target === lightbox) {
+      closeLightbox();
+    }
+  });
+
+  track.addEventListener("scroll", updateNavButtons, { passive: true });
+  window.addEventListener("resize", updateNavButtons);
+
+  document.addEventListener("keydown", (event) => {
+    if (lightbox.hidden) return;
+
+    if (event.key === "Escape") {
+      closeLightbox();
+    } else if (event.key === "ArrowRight") {
+      stepLightbox(1);
+    } else if (event.key === "ArrowLeft") {
+      stepLightbox(-1);
+    }
+  });
+
+  updateNavButtons();
+
+  return {
+    updateLanguage(lang, content) {
+      cardButtons.forEach((button, index) => {
+        button.setAttribute("aria-label", `${content.showcaseOpen} ${index + 1}`);
+        loadShowcaseImage(button, lang);
+      });
+
+      prevButton?.setAttribute("aria-label", content.showcasePrev);
+      nextButton?.setAttribute("aria-label", content.showcaseNext);
+      lightbox
+        .querySelector(".showcase-lightbox-close")
+        ?.setAttribute("aria-label", content.showcaseClose);
+    }
+  };
 }
 
 function setupAboutCarousel() {

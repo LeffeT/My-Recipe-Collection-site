@@ -9,7 +9,7 @@
   />
   <meta name="theme-color" content="#fff6ec" />
   <title>Min Receptsamling - Din personliga receptsamling</title>
-  <link rel="stylesheet" href="style.css?v=13" />
+  <link rel="stylesheet" href="style.css?v=15" />
 </head>
 <body>
   <header class="hero">
@@ -229,6 +229,37 @@
         Bläddra igenom några vyer och få en känsla för hur Min Receptsamling
         håller recepten tydliga, inspirerande och nära till hands.
       </p>
+
+      <div class="app-showcase" data-showcase>
+        <div class="showcase-shell">
+          <button
+            type="button"
+            class="showcase-nav showcase-nav-prev"
+            data-showcase-prev
+            aria-label="Föregående skärmbild"
+            data-i18n-aria-label="showcasePrev"
+          >
+            <span aria-hidden="true">‹</span>
+          </button>
+
+          <div
+            class="showcase-track"
+            id="showcaseTrack"
+            aria-label="Skärmbilder från Min Receptsamling"
+            data-i18n-aria-label="showcaseTrackLabel"
+          ></div>
+
+          <button
+            type="button"
+            class="showcase-nav showcase-nav-next"
+            data-showcase-next
+            aria-label="Nästa skärmbild"
+            data-i18n-aria-label="showcaseNext"
+          >
+            <span aria-hidden="true">›</span>
+          </button>
+        </div>
+      </div>
     </section>
 
     <section id="download" class="section">
@@ -284,6 +315,24 @@
     <p data-i18n="footerText">© 2026 Min Receptsamling. Alla rättigheter förbehållna.</p>
   </footer>
 
-  <script src="script.js?v=7"></script>
+  <div class="showcase-lightbox" id="showcaseLightbox" hidden>
+    <div class="showcase-lightbox-backdrop" data-showcase-close></div>
+
+    <div class="showcase-lightbox-panel" role="dialog" aria-modal="true">
+      <button
+        type="button"
+        class="showcase-lightbox-close"
+        aria-label="Stäng bild"
+        data-i18n-aria-label="showcaseClose"
+        data-showcase-close
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+
+      <img class="showcase-lightbox-image" id="showcaseLightboxImage" alt="" />
+    </div>
+  </div>
+
+  <script src="script.js?v=9"></script>
 </body>
 </html>

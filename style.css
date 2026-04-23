@@ -41,6 +41,10 @@ body {
     linear-gradient(180deg, var(--bg-top) 0%, var(--bg-main) 40%, #f4ebe0 100%);
 }
 
+body.showcase-modal-open {
+  overflow: hidden;
+}
+
 body::before {
   content: "";
   position: fixed;
@@ -694,6 +698,181 @@ main {
   transform: scale(1.2);
 }
 
+.app-showcase {
+  margin-top: 42px;
+}
+
+.showcase-shell {
+  position: relative;
+  padding-inline: 34px;
+}
+
+.showcase-track {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  padding: 6px 4px 22px;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scroll-padding-inline: 4px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+
+.showcase-track::-webkit-scrollbar {
+  display: none;
+}
+
+.showcase-card {
+  flex: 0 0 clamp(300px, 34vw, 408px);
+  min-width: clamp(300px, 34vw, 408px);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.showcase-card-button {
+  width: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 36px;
+  overflow: hidden;
+  aspect-ratio: 1320 / 2868;
+  background: rgba(255, 253, 249, 0.94);
+  border: 1px solid rgba(79, 58, 40, 0.08);
+  box-shadow:
+    0 28px 64px rgba(86, 54, 29, 0.16),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.24);
+  cursor: pointer;
+  transition: transform 0.32s ease, box-shadow 0.32s ease, filter 0.32s ease;
+}
+
+.showcase-card-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center top;
+  background: #f9f0e5;
+}
+
+.showcase-nav {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(79, 58, 40, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 251, 246, 0.92);
+  color: var(--text);
+  box-shadow: 0 18px 40px rgba(86, 54, 29, 0.14);
+  transform: translateY(-50%);
+  transition: transform 0.24s ease, box-shadow 0.24s ease, opacity 0.24s ease;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.showcase-nav span {
+  font-size: 1.9rem;
+  line-height: 1;
+}
+
+.showcase-nav-prev {
+  left: 0;
+}
+
+.showcase-nav-next {
+  right: 0;
+}
+
+.showcase-nav:disabled {
+  opacity: 0.34;
+  cursor: default;
+}
+
+.showcase-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.24s ease;
+}
+
+.showcase-lightbox.is-visible {
+  opacity: 1;
+}
+
+.showcase-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(18, 14, 10, 0.58);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.showcase-lightbox-panel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 100%;
+}
+
+.showcase-lightbox-image {
+  display: block;
+  width: auto;
+  max-width: min(100%, 520px);
+  max-height: calc(100vh - 84px);
+  border-radius: 40px;
+  box-shadow: 0 36px 100px rgba(0, 0, 0, 0.42);
+  background: #fff;
+}
+
+.showcase-lightbox-close {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 2;
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+  background: rgba(26, 21, 16, 0.56);
+  color: #fff;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.showcase-lightbox-close span {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+@media (hover: hover) {
+  .showcase-card-button:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow:
+      0 34px 78px rgba(86, 54, 29, 0.2),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.26);
+    filter: saturate(1.02);
+  }
+
+  .showcase-nav:not(:disabled):hover {
+    transform: translateY(-50%) scale(1.04);
+    box-shadow: 0 22px 48px rgba(86, 54, 29, 0.18);
+  }
+}
+
 .download-card {
   max-width: 940px;
   margin: 0 auto;
@@ -833,6 +1012,11 @@ main {
   .features-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .showcase-card {
+    flex-basis: clamp(280px, 36vw, 352px);
+    min-width: clamp(280px, 36vw, 352px);
+  }
 }
 
 @media (max-width: 900px) {
@@ -859,6 +1043,26 @@ main {
     grid-template-columns: 1fr;
   }
 
+  .showcase-nav {
+    display: none;
+  }
+
+  .showcase-shell {
+    padding-inline: 0;
+  }
+
+  .showcase-track {
+    gap: 18px;
+    padding-inline: 2px;
+    scroll-padding-inline: 14px;
+  }
+
+  .showcase-card {
+    flex-basis: min(82vw, 330px);
+    min-width: min(82vw, 330px);
+    scroll-snap-align: center;
+  }
+
   .download-layout {
     gap: 18px;
   }
@@ -870,7 +1074,7 @@ main {
 
 @media (max-width: 720px) {
   .hero {
-    padding: 18px 16px 78px;
+    padding: 18px 16px 56px;
   }
 
   .hero-content {
@@ -889,6 +1093,20 @@ main {
 
   .visual-panel {
     padding: 22px;
+  }
+
+  .app-showcase {
+    margin-top: 30px;
+  }
+
+  .showcase-track {
+    gap: 16px;
+    padding-bottom: 18px;
+  }
+
+  .showcase-card {
+    flex-basis: min(84vw, 316px);
+    min-width: min(84vw, 316px);
   }
 
   .hero-copy {
@@ -949,6 +1167,20 @@ main {
   .download-qr {
     width: min(190px, 100%);
   }
+
+  #features.section {
+    padding-top: 56px;
+  }
+
+  .showcase-lightbox {
+    padding: 16px;
+  }
+
+  .showcase-lightbox-image {
+    max-width: min(100%, 420px);
+    max-height: calc(100vh - 100px);
+    border-radius: 32px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -990,6 +1222,20 @@ main {
     padding-inline: 8px;
   }
 
+  .showcase-track {
+    gap: 14px;
+    padding-bottom: 14px;
+  }
+
+  .showcase-card {
+    flex-basis: min(86vw, 300px);
+    min-width: min(86vw, 300px);
+  }
+
+  .showcase-card-button {
+    border-radius: 30px;
+  }
+
   .btn {
     width: 100%;
   }
@@ -1028,5 +1274,16 @@ main {
 
   .download-card {
     padding: 30px 18px;
+  }
+
+  #features.section {
+    padding-top: 46px;
+  }
+
+  .showcase-lightbox-close {
+    top: 14px;
+    right: 14px;
+    width: 44px;
+    height: 44px;
   }
 }
