@@ -727,6 +727,11 @@ main {
   display: none;
 }
 
+.showcase-track.dragging {
+  scroll-behavior: auto;
+  scroll-snap-type: none;
+}
+
 .showcase-track,
 .showcase-track * {
   -webkit-user-drag: none;
@@ -753,6 +758,7 @@ main {
     inset 0 0 0 1px rgba(255, 255, 255, 0.24);
   cursor: pointer;
   transition: transform 0.32s ease, box-shadow 0.32s ease, filter 0.32s ease;
+  touch-action: pan-y;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -1045,12 +1051,18 @@ main {
     grid-template-columns: 1fr;
   }
 
-  .showcase-nav {
-    display: none;
-  }
-
   .showcase-shell {
     padding-inline: 0;
+  }
+
+  .showcase-nav {
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 251, 246, 0.82);
+  }
+
+  .showcase-nav span {
+    font-size: 1.55rem;
   }
 
   .showcase-track {

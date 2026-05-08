@@ -281,6 +281,15 @@ function setupShowcaseGallery() {
 
   const cardButtons = Array.from(track.querySelectorAll(".showcase-card-button"));
 
+  let isTrackingPointer = false;
+  let isDraggingTrack = false;
+  let ignoreClickUntil = 0;
+  let activeDragSource = null;
+  let activePointerId = null;
+  let dragStartX = 0;
+  let dragStartY = 0;
+  let dragStartScrollLeft = 0;
+
   function getTrackGap() {
     const styles = window.getComputedStyle(track);
     return parseInt(styles.columnGap || styles.gap || "0", 10);
@@ -302,6 +311,101 @@ function setupShowcaseGallery() {
     const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth - 4);
     prevButton.disabled = track.scrollLeft <= 4;
     nextButton.disabled = track.scrollLeft >= maxScroll;
+  }
+
+  function finishTrackDrag() {
+    if (!isTrackingPointer) return;
+
+    const wasDragging = isDraggingTrack;
+    isTrackingPointer = false;
+    isDraggingTrack = false;
+    activeDragSource = null;
+    activePointerId = null;
+    track.classList.remove("dragging");
+
+    if (wasDragging) {
+      const step = getCardStep();
+      if (step) {
+        track.scrollTo({
+          left: clampIndex(Math.round(track.scrollLeft / step)) * step,
+          behavior: "smooth"
+        });
+      }
+      updateNavButtons();
+      ignoreClickUntil = Date.now() + 450;
+    }
+  }
+
+  function cancelTrackDrag() {
+    isTrackingPointer = false;
+    isDraggingTrack = false;
+    activeDragSource = null;
+    activePointerId = null;
+    track.classList.remove("dragging");
+  }
+
+  function beginTrackDrag(clientX, clientY, source, pointerId = null) {
+    if (lightbox.open) return;
+
+    isTrackingPointer = true;
+    isDraggingTrack = false;
+    activeDragSource = source;
+    activePointerId = pointerId;
+    dragStartX = clientX;
+    dragStartY = clientY;
+    dragStartScrollLeft = track.scrollLeft;
+  }
+
+  function moveTrackDragTo(clientX, clientY, event) {
+    if (!isTrackingPointer) return;
+
+    const diffX = clientX - dragStartX;
+    const diffY = clientY - dragStartY;
+    const absX = Math.abs(diffX);
+    const absY = Math.abs(diffY);
+
+    if (!isDraggingTrack) {
+      if (absX < 8 && absY < 8) return;
+      if (absY > absX) {
+        cancelTrackDrag();
+        return;
+      }
+
+      isDraggingTrack = true;
+      ignoreClickUntil = Date.now() + 450;
+      track.classList.add("dragging");
+      if (activeDragSource === "pointer" && activePointerId !== null) {
+        track.setPointerCapture?.(activePointerId);
+      }
+    }
+
+    if (event.cancelable) {
+      event.preventDefault();
+    }
+    track.scrollLeft = dragStartScrollLeft - diffX;
+    updateNavButtons();
+  }
+
+  function startTrackDrag(event) {
+    if (event.button !== undefined && event.button !== 0) return;
+    beginTrackDrag(event.clientX, event.clientY, "pointer", event.pointerId);
+  }
+
+  function moveTrackDrag(event) {
+    if (activeDragSource !== "pointer" || event.pointerId !== activePointerId) return;
+    moveTrackDragTo(event.clientX, event.clientY, event);
+  }
+
+  function startTrackTouch(event) {
+    if (event.touches.length !== 1) return;
+    const touch = event.touches[0];
+    beginTrackDrag(touch.clientX, touch.clientY, "touch");
+  }
+
+  function moveTrackTouch(event) {
+    if (activeDragSource !== "touch" || event.touches.length !== 1) return;
+    const touch = event.touches[0];
+    moveTrackDragTo(touch.clientX, touch.clientY, event);
   }
 
   function loadShowcaseImage(button, lang) {
@@ -408,7 +512,12 @@ function setupShowcaseGallery() {
   });
 
   cardButtons.forEach((button) => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", (event) => {
+      if (Date.now() < ignoreClickUntil) {
+        event.preventDefault();
+        return;
+      }
+
       openLightbox(Number(button.dataset.index));
     });
   });
@@ -424,6 +533,15 @@ function setupShowcaseGallery() {
   });
 
   track.addEventListener("scroll", updateNavButtons, { passive: true });
+  track.addEventListener("pointerdown", startTrackDrag);
+  track.addEventListener("pointermove", moveTrackDrag);
+  track.addEventListener("pointerup", finishTrackDrag);
+  track.addEventListener("pointercancel", cancelTrackDrag);
+  track.addEventListener("lostpointercapture", finishTrackDrag);
+  track.addEventListener("touchstart", startTrackTouch, { passive: true });
+  track.addEventListener("touchmove", moveTrackTouch, { passive: false });
+  track.addEventListener("touchend", finishTrackDrag, { passive: true });
+  track.addEventListener("touchcancel", cancelTrackDrag, { passive: true });
   window.addEventListener("resize", updateNavButtons);
 
   lightbox.addEventListener("close", () => {
