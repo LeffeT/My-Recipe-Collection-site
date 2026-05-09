@@ -621,11 +621,12 @@ main {
 }
 
 .about-phone {
+  --phone-frame-ratio: 430 / 900;
   width: 228px;
-  aspect-ratio: 1206 / 2622;
+  aspect-ratio: var(--phone-frame-ratio);
   margin: 0 auto 22px;
   position: relative;
-  padding: 7px;
+  padding: clamp(5px, 3.1%, 7px);
   border-radius: 14% / 6.5%;
   background:
     linear-gradient(90deg, #050505, #1c1c1c 8%, #050505 18%, #050505 82%, #262626 92%, #050505),
@@ -639,10 +640,10 @@ main {
 .about-phone::before {
   content: "";
   position: absolute;
-  top: 7px;
+  top: clamp(5px, 1.55%, 7px);
   left: 50%;
-  width: 64px;
-  height: 18px;
+  width: clamp(52px, 30%, 64px);
+  height: clamp(14px, 4%, 18px);
   transform: translateX(-50%);
   border-radius: 999px;
   background:
@@ -657,9 +658,9 @@ main {
   content: "";
   position: absolute;
   left: 50%;
-  bottom: 13px;
-  width: 76px;
-  height: 4px;
+  bottom: clamp(9px, 2.8%, 13px);
+  width: clamp(58px, 34%, 76px);
+  height: clamp(3px, 0.9%, 4px);
   transform: translateX(-50%);
   border-radius: 999px;
   background: #050505;
