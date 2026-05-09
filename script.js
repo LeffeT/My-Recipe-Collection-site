@@ -96,7 +96,7 @@ function setupLanguage() {
       heroKicker: "Build Your Own Timeless Recipe Collection.",
       heroTitle: "Your personal recipe collection – completely private",
       heroText:
-        "Save your favorite recipes, organize them your way, and keep them always within reach. Get started instantly — get started right away — no account needed.",
+        "Save your favorite recipes, organize them your way, and keep them always within reach. Get started right away — no account needed.",
       visualLabel: "Private and simple on your phone",
       previewLabel: "Carousel with previews of My Recipe Collection App",
       heroImageAlt: "My Recipe Collection App",
